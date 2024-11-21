@@ -57,11 +57,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			branch,
 		)
 
-		command := os.Getenv("COMMAND")
-		program := strings.Split(command, " ")[0]
-		args := strings.Split(command, " ")[1:]
-
-		cmd := exec.Command(program, args...)
+		cmd := exec.Command("sh", "-c", os.Getenv("COMMAND"))
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 
