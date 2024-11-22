@@ -53,7 +53,9 @@ func Handler(config *Config, githubSecret string) http.HandlerFunc {
 			return
 		}
 
-		details, err := config.get(payload.Repository.Name)
+		projectName := payload.Repository.Name
+
+		details, err := config.get(projectName)
 		if err != nil {
 			http.Error(w, "Project doesn't exist", http.StatusBadRequest)
 			return
@@ -61,7 +63,8 @@ func Handler(config *Config, githubSecret string) http.HandlerFunc {
 
 		if strings.HasSuffix(payload.Ref, "/"+details.Branch) {
 			log.Printf(
-				"Push event to %s branch received, executing redeploy...\n",
+				"%s -> push event to %s branch received, executing redeploy...\n",
+				projectName,
 				details.Branch,
 			)
 
@@ -79,13 +82,17 @@ func Handler(config *Config, githubSecret string) http.HandlerFunc {
 				return
 			}
 
-			log.Println("Redeployment successful")
+			log.Printf("%s -> redeployment successful\n", projectName)
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte("Redeployment successful"))
 			return
 		}
 
-		log.Printf("Push to branch '%s' ignored.", payload.Ref)
+		log.Printf(
+			"%s -> push to branch '%s' ignored.",
+			projectName,
+			payload.Ref,
+		)
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte("Branch ignored"))
 	}
