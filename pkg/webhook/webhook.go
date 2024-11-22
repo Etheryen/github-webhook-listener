@@ -42,7 +42,7 @@ func Handler(config *Config, githubSecret string) http.HandlerFunc {
 			return
 		}
 
-		if !verifySignature(os.Getenv("GITHUB_SECRET"), signature, body) {
+		if !verifySignature(githubSecret, signature, body) {
 			http.Error(w, "Invalid signature", http.StatusForbidden)
 			return
 		}
