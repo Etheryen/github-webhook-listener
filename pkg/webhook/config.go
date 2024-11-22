@@ -13,8 +13,8 @@ type Config struct {
 }
 
 type ProjectDetails struct {
-	Branch  string `yaml:"branch"`
-	Command string `yaml:"command"`
+	Branch  string
+	Command string
 }
 
 func (c *Config) Print() {
