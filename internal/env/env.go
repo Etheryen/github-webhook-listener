@@ -6,9 +6,9 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var requiredVars = []string{"GITHUB_SECRET", "BRANCH", "COMMAND", "PORT"}
+var requiredVars = []string{"GITHUB_SECRET", "PORT", "CONFIG_PATH"}
 
-func LoadEnv() {
+func GetVars() (string, string, string) {
 	if err := godotenv.Load(); err != nil {
 		panic("failed to load .env")
 	}
@@ -18,4 +18,12 @@ func LoadEnv() {
 			panic(envVar + " not set in .env")
 		}
 	}
+
+	return os.Getenv(
+			"GITHUB_SECRET",
+		), os.Getenv(
+			"PORT",
+		), os.Getenv(
+			"CONFIG_PATH",
+		)
 }
