@@ -1,6 +1,6 @@
 # github-webhook-listener
 
-Go webhook listener for CI-CD on your server.
+Go webhook listener for continous deployment on your server.
 
 ## How to use it
 
